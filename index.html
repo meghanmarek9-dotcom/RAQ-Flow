@@ -1,1 +1,338 @@
-# RAQ-Flow
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Request a Quote</title>
+<style>
+:root{
+  --bg:#f8fafc; --card:#fff; --text:#0f172a; --muted:#64748b; --line:#e2e8f0; --soft:#f8fafc;
+  --accent:#0f172a; --amber:#fffbeb; --amberline:#fde68a; --sky:#f0f9ff; --skyline:#bae6fd;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1040px;margin:0 auto;padding:32px 20px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.brand{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#475569}
+.shell{background:#fff;border:1px solid var(--line);border-radius:32px;box-shadow:0 8px 24px rgba(15,23,42,.06);overflow:hidden}
+.hero{padding:36px 36px 24px;background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%)}
+.hero h1{margin:0;font-size:40px;line-height:1.04}
+.hero p{margin:14px 0 0;max-width:760px;color:#475569;font-size:16px;line-height:1.7}
+.content{padding:28px 36px 36px;display:flex;flex-direction:column;gap:24px}
+.step{background:#fff;border:1px solid var(--line);border-radius:28px;padding:24px}
+.step-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.badge{width:34px;height:34px;border-radius:999px;background:#0f172a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex:0 0 auto}
+.kicker{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#64748b}
+h2{margin:4px 0 0;font-size:28px;line-height:1.1}
+.sub{margin-top:8px;color:#64748b;font-size:14px;line-height:1.6}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.card{overflow:hidden;border:1px solid var(--line);border-radius:24px;background:#fff;cursor:pointer}
+.card.active{border-color:#0f172a;box-shadow:0 0 0 1px #0f172a inset;background:#f8fafc}
+.card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#e2e8f0}
+.card .body{padding:14px}
+.card .title{font-weight:700}
+.card .desc{margin-top:6px;color:#64748b;font-size:13px;line-height:1.5}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{border:1px solid var(--line);border-radius:24px;padding:20px;background:#fff}
+.panel.soft{background:#f8fafc}
+.panel.amber{background:#fffbeb;border-color:#fde68a}
+.panel.sky{background:#f0f9ff;border-color:#bae6fd}
+.panel-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-bottom:10px}
+.panel-head{font-size:20px;font-weight:700;margin-bottom:12px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.option{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.option.active{border-color:#0f172a;background:#f8fafc}
+.ring{width:20px;height:20px;border-radius:999px;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;flex:0 0 auto;margin-top:1px}
+.option.active .ring{border-color:#0f172a}
+.dot{width:10px;height:10px;border-radius:999px;background:#0f172a}
+label{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+input,textarea{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:18px;background:#fff;font:inherit}
+textarea{min-height:180px;resize:vertical}
+.fields{display:flex;flex-wrap:wrap;gap:16px}
+.half{width:calc(50% - 8px)}
+.full{width:100%}
+.contact-grid{display:grid;gap:8px;grid-template-columns:repeat(4,1fr)}
+.contact-btn{border:1px solid var(--line);border-radius:16px;padding:10px 12px;background:#fff}
+.contact-btn.active{border-color:#0f172a;background:#f8fafc}
+.contact-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.contact-left{display:flex;align-items:center;gap:8px}
+.icon{width:28px;height:28px;border-radius:999px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#334155}
+.contact-btn.active .icon{background:#0f172a;color:#fff}
+.contact-label{font-size:14px;font-weight:600}
+.select{width:16px;height:16px;border-radius:999px;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center}
+.contact-btn.active .select{border-color:#0f172a}
+.select .dot{display:none;width:8px;height:8px}
+.contact-btn.active .select .dot{display:block}
+.upload{border:2px dashed #cbd5e1;border-radius:24px;background:#f8fafc;padding:32px;text-align:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:999px;background:#0f172a;color:#fff;border:none;font-weight:700}
+.submit{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:20px}
+.small{font-size:13px;line-height:1.6;color:#64748b}
+@media (max-width:1000px){.cards{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+@media (max-width:700px){
+  .wrap{padding:16px}
+  .hero{padding:24px 20px 18px}
+  .content{padding:18px}
+  .cards,.contact-grid{grid-template-columns:1fr}
+  .half,.full{width:100%}
+  .hero h1{font-size:32px}
+  h2{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">TimberTech</div>
+  </div>
+
+  <div class="shell">
+    <div class="hero">
+      <h1>Request a Quote</h1>
+      <p>Tell us a little about your project and we’ll help connect you to the right next step.</p>
+    </div>
+
+    <div class="content">
+      <section class="step">
+        <div class="step-head">
+          <div class="badge">1</div>
+          <div>
+            <div class="kicker">Location</div>
+            <h2>What is your project ZIP code?</h2>
+          </div>
+        </div>
+        <div style="max-width:420px">
+          <label>ZIP code</label>
+          <input placeholder="60601">
+        </div>
+      </section>
+
+      <section class="step">
+        <div class="step-head">
+          <div class="badge">2</div>
+          <div>
+            <div class="kicker">Project type</div>
+            <h2>What type of project are you planning?</h2>
+          </div>
+        </div>
+
+        <div class="cards">
+          <div class="card active">
+            <img src="https://www.timbertech.com/products/decking-overview/composite/media_176e079f9423c9aa07b6e752f19fa46bb1c622942.webp?format=webp&optimize=medium&width=750">
+            <div class="body">
+              <div class="title">Build a deck</div>
+              <div class="desc">Start a new deck project or plan a full replacement.</div>
+            </div>
+          </div>
+          <div class="card">
+            <img src="https://www.timbertech.com/products/docks/media_18e02c57a9f3e40cbe0ae585c38654513c8fa959d.webp?format=webp&optimize=medium&width=750">
+            <div class="body">
+              <div class="title">Build a dock</div>
+              <div class="desc">Plan a dock project for the water with the right materials and layout.</div>
+            </div>
+          </div>
+          <div class="card">
+            <img src="https://www.timbertech.com/ideas/front-porch-ideas/media_164e6b50fff556f7fd1a005c1ec33b83f0cb31513.jpg?format=jpg&optimize=medium&width=750">
+            <div class="body">
+              <div class="title">Build a porch</div>
+              <div class="desc">Create a porch or covered outdoor space that fits your home.</div>
+            </div>
+          </div>
+          <div class="card">
+            <img src="https://www.timbertech.com/design/deck-designer/media_199934fd6b02c17fc7dabc167409895e26b330fbe.webp?format=webp&optimize=medium&width=750">
+            <div class="body">
+              <div class="title">Get a material-only quote</div>
+              <div class="desc">I know what I need and want pricing on deck boards only.</div>
+            </div>
+          </div>
+          <div class="card">
+            <img src="https://www.timbertech.com/design/deck-designer/media_1704ab32f1b9dd6f50c0005ba8f3a0edfbb6711d1.webp?format=webp&optimize=medium&width=750">
+            <div class="body">
+              <div class="title">Other</div>
+              <div class="desc">My project does not fit one of the main categories above.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="step">
+        <div class="step-head">
+          <div class="badge">3</div>
+          <div>
+            <div class="kicker">Project details</div>
+            <h2>What best describes your project?</h2>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="panel soft">
+            <div class="panel-title">Build a deck</div>
+            <div class="panel-head">What best describes your deck project?</div>
+            <div class="stack">
+              <div class="option">
+                <div class="ring"></div>
+                <div>I want to replace the boards on my existing deck</div>
+              </div>
+              <div class="option active">
+                <div class="ring"><div class="dot"></div></div>
+                <div>I have a deck and want to change the design, shape, or size</div>
+              </div>
+              <div class="option">
+                <div class="ring"></div>
+                <div>I don’t have a deck today and want to build one</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel amber">
+            <div class="panel-title">Material-only quote</div>
+            <div class="panel-head">Where to Buy</div>
+            <div>Material-only quote requests route to TimberTech.com Where to Buy.</div>
+          </div>
+
+          <div class="panel soft">
+            <div class="panel-title">Build a dock</div>
+            <div class="panel-head">What best describes your dock project?</div>
+            <div class="stack">
+              <div class="option">
+                <div class="ring"></div>
+                <div>I want to replace the boards on my existing dock</div>
+              </div>
+              <div class="option">
+                <div class="ring"></div>
+                <div>I have a dock and want to change the design, shape, or size</div>
+              </div>
+              <div class="option active">
+                <div class="ring"><div class="dot"></div></div>
+                <div>I don’t have a dock today and want to build one</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel sky">
+            <div class="panel-title">Other</div>
+            <div class="panel-head">Continue to the next step</div>
+            <div>Other skips project routing and moves directly to the next step.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid2">
+        <div class="step">
+          <div class="step-head">
+            <div class="badge">4</div>
+            <div>
+              <div class="kicker">Qualification</div>
+              <h2>Where are you in the process?</h2>
+            </div>
+          </div>
+          <div class="stack">
+            <div class="option"><div class="ring"></div><div>Just exploring ideas</div></div>
+            <div class="option"><div class="ring"></div><div>Comparing options and planning</div></div>
+            <div class="option active"><div class="ring"><div class="dot"></div></div><div>Looking for pricing or expert guidance</div></div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-head">
+            <div class="badge">5</div>
+            <div>
+              <div class="kicker">Timing</div>
+              <h2>When are you hoping to start your project?</h2>
+            </div>
+          </div>
+          <div class="stack">
+            <div class="option"><div class="ring"></div><div>0–3 months</div></div>
+            <div class="option active"><div class="ring"><div class="dot"></div></div><div>3–6 months</div></div>
+            <div class="option"><div class="ring"></div><div>6–12 months</div></div>
+            <div class="option"><div class="ring"></div><div>12+ months</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="step">
+        <div class="step-head">
+          <div class="badge">6</div>
+          <div>
+            <div class="kicker">Contact</div>
+            <h2>Contact details</h2>
+          </div>
+        </div>
+
+        <div class="fields">
+          <div class="half"><label>First Name</label><input placeholder="First name"></div>
+          <div class="half"><label>Last Name</label><input placeholder="Last name"></div>
+          <div class="half"><label>Phone</label><input placeholder="(555) 555-5555"></div>
+          <div class="half"><label>Email</label><input placeholder="you@example.com"></div>
+          <div class="full"><label>City</label><input placeholder="Chicago"></div>
+        </div>
+
+        <div style="margin-top:24px">
+          <label>How would you like to be contacted?</label>
+          <div class="contact-grid">
+            <div class="contact-btn active">
+              <div class="contact-row">
+                <div class="contact-left"><div class="icon">•</div><div class="contact-label">No preference</div></div>
+                <div class="select"><div class="dot"></div></div>
+              </div>
+            </div>
+            <div class="contact-btn">
+              <div class="contact-row">
+                <div class="contact-left"><div class="icon">☎</div><div class="contact-label">Call</div></div>
+                <div class="select"></div>
+              </div>
+            </div>
+            <div class="contact-btn">
+              <div class="contact-row">
+                <div class="contact-left"><div class="icon">✉</div><div class="contact-label">Email</div></div>
+                <div class="select"></div>
+              </div>
+            </div>
+            <div class="contact-btn">
+              <div class="contact-row">
+                <div class="contact-left"><div class="icon">✆</div><div class="contact-label">Text</div></div>
+                <div class="select"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="step">
+        <div class="step-head">
+          <div class="badge">7</div>
+          <div>
+            <div class="kicker">Final details</div>
+            <h2>Anything else you'd like the contractor to know?</h2>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div>
+            <label>Project details</label>
+            <textarea placeholder="Share anything helpful, like what you want to build or change, style ideas, project condition, or anything you want the contractor to know."></textarea>
+          </div>
+
+          <div>
+            <div class="upload">
+              <div style="font-size:32px">📷</div>
+              <div style="margin-top:10px;font-weight:700">Add a photo of your space</div>
+              <button class="btn" style="margin-top:16px">Upload photo</button>
+            </div>
+
+            <label style="display:flex;gap:10px;align-items:flex-start;margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:18px;background:#f8fafc;font-weight:400">
+              <input type="checkbox" checked style="margin-top:4px">
+              <span>I agree to be contacted about my project and understand that my request may be shared with up to 3 contractors or brand representatives for follow-up.</span>
+            </label>
+
+            <div class="submit">
+              <div class="small">This request may be sent to up to 3 contractors so the homeowner can receive follow-up.</div>
+              <button class="btn">Submit request</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+</body>
+</html>
