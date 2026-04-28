@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request a Quote — TimberTech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #111111;
+    --dark: #1a1a1a;
+    --gray-700: #374151;
+    --gray-500: #6b7280;
+    --gray-300: #d1d5db;
+    --gray-100: #f3f4f6;
+    --gray-50: #f9fafb;
+    --white: #ffffff;
+    --accent: #1a1a1a;
+    --accent-light: #f5f3ef;
+    --gold: #c8a96e;
+    --success: #16a34a;
+    --border: #e5e7eb;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f8f7f5;
+    color: var(--black);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  /* NAV */
+  .nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+  }
+
+  /* WRAPPER */
+  .page-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* SCREEN MANAGEMENT */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 40px 44px;
+    margin-bottom: 20px;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    margin-bottom: 36px;
+  }
+  .page-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .page-header p {
+    color: var(--gray-500);
+    font-size: 15px;
+  }
+
+  /* PROGRESS */
+  .progress-bar {
+    height: 3px;
+    background: var(--gray-100);
+    border-radius: 99px;
+    margin-bottom: 36px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--black);
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  /* STEP LABEL */
+  .step-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .step-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--black);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* QUESTION TITLE */
+  .q-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  /* TEXT INPUT */
+  .field-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .field-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--black);
+    background: var(--white);
+    transition: border-color 0.15s;
+    outline: none;
+  }
+  .field-input:focus { border-color: var(--black); }
+  .field-input::placeholder { color: var(--gray-300); }
+  .field-group { margin-bottom: 18px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* PROJECT TYPE CARDS */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+  .project-card {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    background: var(--white);
+    text-align: left;
+  }
+  .project-card:hover { border-color: #999; box-shadow: var(--shadow-md); }
+  .project-card.selected { border-color: var(--black); box-shadow: 0 0 0 1px var(--black); }
+  .project-card-img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: var(--gray-100);
+    display: block;
+  }
+  .project-card-img-placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+  .project-card-label {
+    padding: 10px 10px 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--black);
+    line-height: 1.2;
+  }
+  .project-card-desc {
+    padding: 0 10px 12px;
+    font-size: 11px;
+    color: var(--gray-500);
+    line-height: 1.4;
+  }
+
+  /* RADIO OPTIONS */
+  .radio-group { display: flex; flex-direction: column; gap: 10px; }
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-700);
+    background: var(--white);
+    position: relative;
+  }
+  .radio-option:hover { border-color: #aaa; background: var(--gray-50); }
+  .radio-option.selected { border-color: var(--black); background: var(--gray-50); color: var(--black); box-shadow: 0 0 0 1px var(--black); }
+  .radio-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--gray-300);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s;
+  }
+  .radio-option.selected .radio-dot { border-color: var(--black); }
+  .radio-dot-fill {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--black);
+    display: none;
+  }
+  .radio-option.selected .radio-dot-fill { display: block; }
+
+  /* CONTACT METHOD PILLS */
+  .contact-methods { display: flex; gap: 10px; flex-wrap: wrap; }
+  .contact-pill {
+    padding: 8px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all 0.15s;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .contact-pill:hover { border-color: #999; }
+  .contact-pill.selected { border-color: var(--black); background: var(--black); color: white; }
+  .contact-pill-icon { font-size: 14px; }
+
+  /* TEXTAREA */
+  .field-textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--black);
+    background: var(--white);
+    resize: vertical;
+    min-height: 120px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .field-textarea:focus { border-color: var(--black); }
+  .field-textarea::placeholder { color: var(--gray-300); }
+
+  /* PHOTO UPLOAD */
+  .photo-box {
+    border: 1.5px dashed var(--gray-300);
+    border-radius: 10px;
+    padding: 32px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    background: var(--gray-50);
+  }
+  .photo-box:hover { border-color: var(--black); background: var(--accent-light); }
+  .photo-box-icon { font-size: 28px; margin-bottom: 10px; }
+  .photo-box-label { font-size: 14px; font-weight: 600; color: var(--black); margin-bottom: 4px; }
+  .photo-box-sub { font-size: 12px; color: var(--gray-500); }
+  .photo-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 20px;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--black);
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .photo-btn:hover { border-color: var(--black); }
+
+  /* FINAL DETAILS LAYOUT */
+  .final-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  /* CONSENT */
+  .consent-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 16px;
+    background: var(--gray-50);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-top: 20px;
+  }
+  .consent-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--black);
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+  .consent-text { font-size: 12px; color: var(--gray-500); line-height: 1.6; }
+
+  /* BUTTONS */
+  .btn-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .btn-back {
+    padding: 12px 24px;
+    border: 1.5px solid var(--border);
+    border-radius: 99px;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .btn-back:hover { border-color: var(--black); }
+  .btn-next {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 99px;
+    background: var(--black);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn-next:hover { background: #333; }
+  .btn-next:active { transform: scale(0.98); }
+  .btn-next:disabled { background: var(--gray-300); cursor: not-allowed; }
+  .btn-submit {
+    padding: 14px 32px;
+    border: none;
+    border-radius: 99px;
+    background: var(--black);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    width: 100%;
+    margin-top: 20px;
+  }
+  .btn-submit:hover { background: #333; }
+  .btn-submit:active { transform: scale(0.98); }
+
+  /* REDIRECT (Material Only) */
+  .redirect-card {
+    background: var(--accent-light);
+    border: 1px solid #e2d9c8;
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+  }
+  .redirect-icon { font-size: 40px; margin-bottom: 16px; }
+  .redirect-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .redirect-sub { color: var(--gray-500); font-size: 15px; margin-bottom: 24px; }
+  .btn-redirect {
+    display: inline-block;
+    padding: 12px 32px;
+    background: var(--black);
+    color: white;
+    border-radius: 99px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn-restart {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--gray-500);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  /* ======================== SUCCESS PAGE ======================== */
+  .success-header {
+    text-align: center;
+    padding: 40px 20px 32px;
+  }
+  .success-check {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--black);
+    color: white;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .success-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .success-header p {
+    color: var(--gray-500);
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* EMAIL NOTICE */
+  .email-notice {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .email-notice-icon { font-size: 20px; flex-shrink: 0; }
+  .email-notice-text { font-size: 13px; color: #166534; line-height: 1.5; }
+  .email-notice-text strong { font-weight: 600; }
+
+  /* SECTION HEADING */
+  .section-heading {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-heading-icon { font-size: 18px; }
+
+  /* CONTRACTOR CARDS */
+  .contractor-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+  .contractor-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .contractor-card:hover { border-color: #aaa; box-shadow: var(--shadow-md); }
+  .contractor-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid var(--border);
+    font-weight: 700;
+    color: var(--gray-700);
+    font-family: 'DM Serif Display', serif;
+  }
+  .contractor-info { flex: 1; min-width: 0; }
+  .contractor-name { font-size: 15px; font-weight: 700; color: var(--black); margin-bottom: 3px; }
+  .contractor-meta { font-size: 12px; color: var(--gray-500); margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .star-rating { color: #f59e0b; font-size: 12px; letter-spacing: 1px; }
+  .rating-count { color: var(--gray-500); }
+  .contractor-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag {
+    padding: 3px 10px;
+    background: var(--gray-100);
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gray-700);
+  }
+  .contractor-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn-profile {
+    padding: 7px 16px;
+    border: 1.5px solid var(--black);
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--black);
+    background: white;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-profile:hover { background: var(--black); color: white; }
+  .btn-download {
+    padding: 7px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-700);
+    background: white;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .btn-download:hover { border-color: #999; }
+  .match-badge {
+    padding: 3px 10px;
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  /* EXPECTATIONS */
+  .expectations-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .expect-list { display: flex; flex-direction: column; gap: 16px; }
+  .expect-item { display: flex; gap: 14px; align-items: flex-start; }
+  .expect-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    border: 1.5px solid var(--border);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .expect-content-title { font-size: 14px; font-weight: 600; color: var(--black); margin-bottom: 3px; }
+  .expect-content-sub { font-size: 13px; color: var(--gray-500); line-height: 1.5; }
+
+  /* PREP TIPS */
+  .prep-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .prep-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .prep-icon { font-size: 20px; flex-shrink: 0; }
+  .prep-title { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 3px; }
+  .prep-sub { font-size: 12px; color: var(--gray-500); line-height: 1.4; }
+
+  /* FOOTER CTA */
+  .success-footer {
+    text-align: center;
+    padding: 24px;
+    background: var(--black);
+    border-radius: 14px;
+    color: white;
+    margin-bottom: 40px;
+  }
+  .success-footer h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .success-footer p { font-size: 13px; opacity: 0.7; margin-bottom: 16px; }
+  .btn-start-over {
+    padding: 10px 24px;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 99px;
+    background: transparent;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-start-over:hover { background: rgba(255,255,255,0.1); }
+
+  /* VALIDATION */
+  .error-msg { font-size: 12px; color: #dc2626; margin-top: 5px; display: none; }
+  .field-input.invalid, .field-textarea.invalid { border-color: #dc2626; }
+
+  /* ANIMATIONS */
+  .screen.active {
+    animation: fadeUp 0.3s ease;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .card { padding: 28px 22px; }
+    .project-grid { grid-template-columns: repeat(3, 1fr); }
+    .field-row { grid-template-columns: 1fr; }
+    .final-grid { grid-template-columns: 1fr; }
+    .prep-grid { grid-template-columns: 1fr; }
+    .contractor-card { flex-direction: column; }
+  }
+  @media (max-width: 400px) {
+    .project-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">TimberTech</div>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- ===================== FORM SCREENS ===================== -->
+
+  <!-- STEP 1: ZIP CODE -->
+  <div class="screen active" id="screen-zip">
+    <div class="page-header">
+      <h1>Request a Quote</h1>
+      <p>Tell us a little about your project and we'll help connect you to the right next step.</p>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:14%"></div></div>
+    <div class="card">
+      <div class="step-label"><span class="step-num">1</span> Location</div>
+      <h2 class="q-title">What is your project ZIP code?</h2>
+      <div class="field-group">
+        <label class="field-label" for="zip">ZIP code</label>
+        <input class="field-input" id="zip" type="text" inputmode="numeric" maxlength="5" placeholder="60601" autocomplete="postal-code">
+        <div class="error-msg" id="zip-error">Please enter a valid 5-digit ZIP code.</div>
+      </div>
+      <div class="btn-row" style="border-top:none; padding-top:0;">
+        <button class="btn-next" onclick="goToProjectType()">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: PROJECT TYPE -->
+  <div class="screen" id="screen-project-type">
+    <div class="page-header">
+      <h1>Request a Quote</h1>
+      <p>Tell us a little about your project and we'll help connect you to the right next step.</p>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:28%"></div></div>
+    <div class="card">
+      <div class="step-label"><span class="step-num">2</span> Project Type</div>
+      <h2 class="q-title">What type of project are you planning?</h2>
+      <div class="project-grid">
+        <div class="project-card" onclick="selectProjectType(this,'deck')">
+          <div class="project-card-img-placeholder">🪵</div>
+          <div class="project-card-label">Build a deck</div>
+          <div class="project-card-desc">Start a new deck project or plan a full replacement.</div>
+        </div>
+        <div class="project-card" onclick="selectProjectType(this,'dock')">
+          <div class="project-card-img-placeholder">⚓</div>
+          <div class="project-card-label">Build a dock</div>
+          <div class="project-card-desc">Plan a dock project for the water with the right materials.</div>
+        </div>
+        <div class="project-card" onclick="selectProjectType(this,'porch')">
+          <div class="project-card-img-placeholder">🏡</div>
+          <div class="project-card-label">Build a porch</div>
+          <div class="project-card-desc">Create a porch or covered outdoor space that fits your home.</div>
+        </div>
+        <div class="project-card" onclick="selectProjectType(this,'material')">
+          <div class="project-card-img-placeholder">📦</div>
+          <div class="project-card-label">Get a material-only quote</div>
+          <div class="project-card-desc">I know what I need and want pricing on deck boards only.</div>
+        </div>
+        <div class="project-card" onclick="selectProjectType(this,'other')">
+          <div class="project-card-img-placeholder">💬</div>
+          <div class="project-card-label">Other</div>
+          <div class="project-card-desc">My project does not fit one of the main categories above.</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goTo('screen-zip')">← Back</button>
+        <button class="btn-next" id="btn-project-next" onclick="goFromProjectType()" disabled>Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: PROJECT DETAILS (Deck/Dock/Porch) -->
+  <div class="screen" id="screen-project-details">
+    <div class="page-header">
+      <h1>Request a Quote</h1>
+      <p>Tell us a little about your project and we'll help connect you to the right next step.</p>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:42%"></div></div>
+    <div class="card">
+      <div class="step-label"><span class="step-num">3</span> Project Details</div>
+      <h2 class="q-title" id="details-title">What best describes your deck project?</h2>
+      <div class="radio-group" id="details-options">
+        <div class="radio-option" onclick="selectRadio(this,'details')">
+          <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+          <span>I want to replace the boards on my existing deck</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this,'details')">
+          <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+          <span>I have a deck and want to change the design, shape, or size</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this,'details')">
+          <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+          <span>I don't have a deck today and want to build one</span>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goTo('screen-project-type')">← Back</button>
+        <button class="btn-next" id="btn-details-next" onclick="goTo('screen-qualification')" disabled>Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: QUALIFICATION -->
+  <div class="screen" id="screen-qualification">
+    <div class="progress-bar"><div class="progress-fill" style="width:57%"></div></div>
+    <div class="card">
+      <div class="step-label"><span class="step-num">4</span> Qualification</div>
+      <h2 class="q-title">Where are you in the process?</h2>
+      <div class="radio-group">
+        <div class="radio-option" onclick="selectRadio(this,'qual')">
+          <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+          <span>Just exploring ideas</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this,'qual')">
+          <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+          <span>Comparing options and planning</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this,'qual')">
+          <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+          <span>Looking for pricing or expert guidance</span>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goTo('screen-project-details')">← Back</button>
+        <button class="btn-next" id="btn-qual-next" onclick="goTo('screen-timing')" disabled>Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: TIMING -->
+  <div class="screen" id="screen-timing">
+    <div class="progress-bar"><div class="progress-fill" style="width:71%"></div></div>
+    <div class="card">
+      <div class="step-label"><span class="step-num">5</span> Timing</div>
+      <h2 class="q-title">When are you hoping to start your project?</h2>
+      <div class="radio-group">
+        <div class="radio-option" onclick="selectRadio(this,'timing')">
+          <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+          <span>0–3 months</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this,'timing')">
+          <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+          <span>3–6 months</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this,'timing')">
+          <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+          <span>6–12 months</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this,'timing')">
+          <div class="radio-dot"><div class="radio-dot-fill"></div></div>
+          <span>12+ months</span>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goTo('screen-qualification')">← Back</button>
+        <button class="btn-next" id="btn-timing-next" onclick="goTo('screen-contact')" disabled>Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6: CONTACT -->
+  <div class="screen" id="screen-contact">
+    <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
+    <div class="card">
+      <div class="step-label"><span class="step-num">6</span> Contact</div>
+      <h2 class="q-title">Contact details</h2>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label" for="fname">First Name</label>
+          <input class="field-input" id="fname" type="text" placeholder="First name" autocomplete="given-name">
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="lname">Last Name</label>
+          <input class="field-input" id="lname" type="text" placeholder="Last name" autocomplete="family-name">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label" for="phone">Phone</label>
+          <input class="field-input" id="phone" type="tel" placeholder="(555) 555-5555" autocomplete="tel">
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="email">Email</label>
+          <input class="field-input" id="email" type="email" placeholder="you@example.com" autocomplete="email">
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="city">City</label>
+        <input class="field-input" id="city" type="text" placeholder="Chicago" autocomplete="address-level2">
+      </div>
+      <div class="field-group">
+        <label class="field-label">How would you like to be contacted?</label>
+        <div class="contact-methods">
+          <div class="contact-pill selected" onclick="selectPill(this)"><span class="contact-pill-icon">🔔</span> No preference</div>
+          <div class="contact-pill" onclick="selectPill(this)"><span class="contact-pill-icon">📞</span> Call</div>
+          <div class="contact-pill" onclick="selectPill(this)"><span class="contact-pill-icon">✉️</span> Email</div>
+          <div class="contact-pill" onclick="selectPill(this)"><span class="contact-pill-icon">💬</span> Text</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" id="contact-back-btn" onclick="contactBack()">← Back</button>
+        <button class="btn-next" onclick="goToFinal()">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7: FINAL DETAILS -->
+  <div class="screen" id="screen-final">
+    <div class="progress-bar"><div class="progress-fill" style="width:96%"></div></div>
+    <div class="card">
+      <div class="step-label"><span class="step-num" id="final-step-num">7</span> Final Details</div>
+      <h2 class="q-title">Anything else you'd like the contractor to know?</h2>
+      <div class="final-grid">
+        <div>
+          <div class="field-group" style="margin-bottom:0">
+            <label class="field-label">Project details</label>
+            <textarea class="field-textarea" id="project-details" placeholder="Share anything helpful, like what you want to build or change, style ideas, project condition, or anything you want the contractor to know."></textarea>
+          </div>
+        </div>
+        <div>
+          <label class="field-label">Add a photo of your space</label>
+          <div class="photo-box" onclick="document.getElementById('photo-input').click()">
+            <div class="photo-box-icon">📷</div>
+            <div class="photo-box-label">Add a photo of your space</div>
+            <div class="photo-box-sub">Optional — helps contractors understand your project</div>
+            <div class="photo-btn">Upload photo</div>
+            <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="photoSelected(this)">
+          </div>
+          <div id="photo-preview" style="display:none; margin-top:10px; font-size:12px; color:var(--success);">✓ Photo attached</div>
+        </div>
+      </div>
+      <div class="consent-row">
+        <input type="checkbox" class="consent-checkbox" id="consent-check" onchange="toggleConsent()">
+        <label class="consent-text" for="consent-check">
+          I agree to be contacted about my project and understand that my request may be shared with up to 3 contractors or brand representatives for follow-up.
+        </label>
+      </div>
+      <p style="font-size:12px; color:var(--gray-500); text-align:center; margin-top:16px;">This request may be sent to up to 3 contractors so the homeowner can receive follow-up.</p>
+      <button class="btn-submit" id="submit-btn" onclick="submitForm()" disabled>Submit request</button>
+      <div class="btn-row" style="justify-content:flex-start; border-top:none; padding-top:16px; margin-top:0;">
+        <button class="btn-back" onclick="goTo('screen-contact')">← Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATERIAL ONLY REDIRECT -->
+  <div class="screen" id="screen-material">
+    <div class="card redirect-card">
+      <div class="redirect-icon">🏪</div>
+      <div class="redirect-title">Find Where to Buy</div>
+      <div class="redirect-sub">Material-only quote requests are fulfilled through our retailer network. We'll connect you to a location near you.</div>
+      <a class="btn-redirect" href="https://www.timbertech.com/where-to-buy" target="_blank">Find a Retailer Near You →</a>
+      <br><br>
+      <span class="btn-restart" onclick="restart()">Start over with a different project type</span>
+    </div>
+  </div>
+
+  <!-- ===================== SUCCESS PAGE ===================== -->
+  <div class="screen" id="screen-success">
+
+    <!-- HERO CONFIRMATION -->
+    <div class="success-header card" style="text-align:center; padding: 44px 40px 36px;">
+      <div class="success-check">✓</div>
+      <h1>Request submitted, <span id="success-name">there</span>!</h1>
+      <p style="margin-bottom:20px;">We've received your project request and are matching you with <strong>top TimberTech-certified contractors</strong> in your area. Here's exactly what happens next.</p>
+
+      <!-- PENDING STATE BADGE -->
+      <div style="display:inline-flex; align-items:center; gap:8px; background:#fefce8; border:1px solid #fde68a; border-radius:99px; padding:8px 18px; font-size:13px; color:#92400e; font-weight:600;">
+        <span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block;animation:pulse 1.5s infinite;"></span>
+        Matching in progress — contractors are reviewing your request
+      </div>
+    </div>
+
+    <div class="card">
+
+      <!-- EMAIL NOTICE -->
+      <div class="email-notice">
+        <div class="email-notice-icon">📧</div>
+        <div class="email-notice-text">
+          <strong>Confirmation sent to <span id="success-email">your email</span></strong><br>
+          Once a contractor accepts your project, you'll receive a second email with their full profile, contact details, Google reviews, and a link to their TimberTech.com listing — so you're never left wondering who's reaching out.
+        </div>
+      </div>
+
+      <!-- HOW THE MATCHING WORKS -->
+      <div class="section-heading"><span class="section-heading-icon">🔍</span> How We Match You</div>
+      <div class="expectations-card" style="margin-bottom:28px;">
+        <p style="font-size:14px; color:#374151; line-height:1.7; margin-bottom:16px;">
+          We've shared your project details with up to <strong>5 of our top TimberTech-certified contractors</strong> near <span id="success-city">your area</span>. These pros are selected based on your project type, location, and availability — not just proximity. Each contractor is independently licensed, insured, and trained on TimberTech products.
+        </p>
+        <p style="font-size:14px; color:#374151; line-height:1.7;">
+          <strong>You'll only hear from contractors who have actively accepted your job</strong> — we don't send your contact information to contractors who haven't reviewed and confirmed interest in your specific project.
+        </p>
+      </div>
+
+      <div class="contractor-list" id="contractor-list" style="display:none">
+        <!-- JS-generated -->
+      </div>
+
+      <!-- WHAT HAPPENS NEXT -->
+      <div class="section-heading" style="margin-top: 32px;"><span class="section-heading-icon">📋</span> What to Expect</div>
+      <div class="expectations-card">
+        <div class="expect-list">
+          <div class="expect-item">
+            <div class="expect-num">1</div>
+            <div>
+              <div class="expect-content-title">Contractors review your project</div>
+              <div class="expect-content-sub">Your request — including project type, details, timing, and any photos — is shared with matched contractors. They review and indicate interest within 1–2 business days.</div>
+            </div>
+          </div>
+          <div class="expect-item">
+            <div class="expect-num">2</div>
+            <div>
+              <div class="expect-content-title">You'll get an email when a contractor accepts</div>
+              <div class="expect-content-sub">Once a contractor confirms they want your job, we'll email you their full profile: name, company, phone, ratings, Google reviews, TimberTech.com profile link, and certifications. No guessing who's calling.</div>
+            </div>
+          </div>
+          <div class="expect-item">
+            <div class="expect-num">3</div>
+            <div>
+              <div class="expect-content-title">The contractor reaches out directly</div>
+              <div class="expect-content-sub">They'll contact you via your preferred method — <span id="success-contact">your preferred contact method</span> — to schedule a free consultation or site visit at a time that works for you.</div>
+            </div>
+          </div>
+          <div class="expect-item">
+            <div class="expect-num">4</div>
+            <div>
+              <div class="expect-content-title">Compare, choose, and build with confidence</div>
+              <div class="expect-content-sub">You may hear from more than one contractor — that's a good thing. Compare quotes, ask questions, and choose the pro who's the right fit. There's no obligation and no pressure.</div>
+            </div>
+          </div>
+          <div class="expect-item">
+            <div class="expect-num">5</div>
+            <div>
+              <div class="expect-content-title">Your project is backed by TimberTech</div>
+              <div class="expect-content-sub">Every matched contractor is TimberTech-certified and trained on our materials. Your installation is covered by TimberTech product warranties, giving you peace of mind from day one.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOW TO PREPARE -->
+      <div class="section-heading" style="margin-top: 32px;"><span class="section-heading-icon">📐</span> How to Prepare for Your Consultation</div>
+      <p style="font-size:13px; color:#6b7280; margin-bottom:16px; margin-top:-8px;">A little prep goes a long way. Here's what to have ready before your contractor calls.</p>
+      <div class="prep-grid">
+        <div class="prep-item">
+          <div class="prep-icon">📏</div>
+          <div>
+            <div class="prep-title">Know your space dimensions</div>
+            <div class="prep-sub">Rough measurements of your project area help contractors give you faster, more accurate quotes.</div>
+          </div>
+        </div>
+        <div class="prep-item">
+          <div class="prep-icon">🎨</div>
+          <div>
+            <div class="prep-title">Gather style inspiration</div>
+            <div class="prep-sub">Save photos of decks or finishes you love to share during your consultation — or browse TimberTech.com first.</div>
+          </div>
+        </div>
+        <div class="prep-item">
+          <div class="prep-icon">💵</div>
+          <div>
+            <div class="prep-title">Have a budget range in mind</div>
+            <div class="prep-sub">Even a rough range helps your contractor tailor their recommendations and materials to what works for you.</div>
+          </div>
+        </div>
+        <div class="prep-item">
+          <div class="prep-icon">🏗️</div>
+          <div>
+            <div class="prep-title">Check HOA or permit requirements</div>
+            <div class="prep-sub">Some areas require permits or HOA approval before construction. Your contractor can help guide you through the process.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER CTA -->
+      <div class="success-footer">
+        <h3>Explore TimberTech products while you wait</h3>
+        <p>Browse decking collections, colors, railing options, and accessories — and come to your consultation with ideas already in mind.</p>
+        <button class="btn-start-over" onclick="restart()">Start a New Request</button>
+      </div>
+    </div>
+
+  </div><!-- /screen-success -->
+
+</div><!-- /page-wrapper -->
+
+<script>
+  // ===================== STATE =====================
+  const state = {
+    zip: '',
+    projectType: null, // 'deck','dock','porch','material','other'
+    flowPath: 'standard', // 'standard','other','material'
+    projectDetails: null,
+    qualification: null,
+    timing: null,
+    contactMethod: 'No preference',
+    fname: '', lname: '', phone: '', email: '', city: '',
+    description: '',
+    hasPhoto: false,
+    consent: false,
+  };
+
+  // ===================== NAVIGATION =====================
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ===================== STEP 1: ZIP =====================
+  function goToProjectType() {
+    const zip = document.getElementById('zip').value.trim();
+    const err = document.getElementById('zip-error');
+    if (!/^\d{5}$/.test(zip)) {
+      err.style.display = 'block';
+      document.getElementById('zip').classList.add('invalid');
+      return;
+    }
+    err.style.display = 'none';
+    document.getElementById('zip').classList.remove('invalid');
+    state.zip = zip;
+    goTo('screen-project-type');
+  }
+
+  document.getElementById('zip').addEventListener('keydown', e => {
+    if (e.key === 'Enter') goToProjectType();
+  });
+
+  // ===================== STEP 2: PROJECT TYPE =====================
+  function selectProjectType(el, type) {
+    document.querySelectorAll('.project-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    state.projectType = type;
+    document.getElementById('btn-project-next').disabled = false;
+  }
+
+  function goFromProjectType() {
+    if (!state.projectType) return;
+    if (state.projectType === 'material') {
+      state.flowPath = 'material';
+      goTo('screen-material');
+    } else if (state.projectType === 'other') {
+      state.flowPath = 'other';
+      // Skip to contact for Other path
+      document.getElementById('contact-back-btn').onclick = () => goTo('screen-project-type');
+      document.getElementById('final-step-num').textContent = '3';
+      goTo('screen-contact');
+    } else {
+      state.flowPath = 'standard';
+      // Update project details title
+      const titles = { deck: 'deck', dock: 'dock', porch: 'porch' };
+      const t = titles[state.projectType] || 'deck';
+      document.getElementById('details-title').textContent = `What best describes your ${t} project?`;
+      // Update radio labels
+      const opts = document.querySelectorAll('#details-options .radio-option span');
+      opts[0].textContent = `I want to replace the boards on my existing ${t}`;
+      opts[1].textContent = `I have a ${t} and want to change the design, shape, or size`;
+      opts[2].textContent = `I don't have a ${t} today and want to build one`;
+      // Reset
+      document.querySelectorAll('#details-options .radio-option').forEach(r => r.classList.remove('selected'));
+      document.getElementById('btn-details-next').disabled = true;
+      document.getElementById('contact-back-btn').onclick = () => goTo('screen-timing');
+      document.getElementById('final-step-num').textContent = '7';
+      goTo('screen-project-details');
+    }
+  }
+
+  // ===================== RADIO GROUPS =====================
+  const radios = {};
+
+  function selectRadio(el, group) {
+    const groupEls = el.closest('.card').querySelectorAll(`.radio-option`);
+    groupEls.forEach(r => r.classList.remove('selected'));
+    el.classList.add('selected');
+
+    const text = el.querySelector('span').textContent.trim();
+    if (group === 'details') {
+      state.projectDetails = text;
+      document.getElementById('btn-details-next').disabled = false;
+    } else if (group === 'qual') {
+      state.qualification = text;
+      document.getElementById('btn-qual-next').disabled = false;
+    } else if (group === 'timing') {
+      state.timing = text;
+      document.getElementById('btn-timing-next').disabled = false;
+    }
+  }
+
+  // ===================== CONTACT PILLS =====================
+  function selectPill(el) {
+    document.querySelectorAll('.contact-pill').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+    state.contactMethod = el.querySelector('span + *') 
+      ? el.textContent.trim() 
+      : el.textContent.trim();
+  }
+
+  // ===================== CONTACT BACK =====================
+  function contactBack() {
+    if (state.flowPath === 'other') goTo('screen-project-type');
+    else goTo('screen-timing');
+  }
+
+  // ===================== FINAL =====================
+  function goToFinal() {
+    state.fname = document.getElementById('fname').value.trim();
+    state.lname = document.getElementById('lname').value.trim();
+    state.phone = document.getElementById('phone').value.trim();
+    state.email = document.getElementById('email').value.trim();
+    state.city = document.getElementById('city').value.trim();
+    goTo('screen-final');
+  }
+
+  function photoSelected(input) {
+    if (input.files && input.files[0]) {
+      state.hasPhoto = true;
+      document.getElementById('photo-preview').style.display = 'block';
+    }
+  }
+
+  function toggleConsent() {
+    state.consent = document.getElementById('consent-check').checked;
+    document.getElementById('submit-btn').disabled = !state.consent;
+  }
+
+  // ===================== SUBMIT =====================
+  function submitForm() {
+    state.fname = document.getElementById('fname').value.trim();
+    state.lname = document.getElementById('lname').value.trim();
+    state.email = document.getElementById('email').value.trim();
+    state.description = document.getElementById('project-details').value.trim();
+
+    buildSuccessPage();
+    goTo('screen-success');
+  }
+
+  // ===================== SUCCESS PAGE =====================
+  const contractorData = [
+    {
+      initials: 'AP', name: 'Apex Outdoor Living', rating: 4.9, reviews: 312,
+      location: 'Naperville, IL', distance: '4.2 mi',
+      tags: ['Decks & Porches', 'TimberTech Certified', 'Free Estimates'],
+      specialties: ['Composite Decking', 'Railings', 'Lighting'],
+      since: 2009
+    },
+    {
+      initials: 'RB', name: 'Ridgeback Builders', rating: 4.8, reviews: 198,
+      location: 'Lisle, IL', distance: '1.8 mi',
+      tags: ['Docks & Decks', 'TimberTech Certified', 'Licensed & Insured'],
+      specialties: ['New Construction', 'Design Consultation'],
+      since: 2014
+    },
+    {
+      initials: 'GC', name: 'Green Cedar Construction', rating: 4.7, reviews: 253,
+      location: 'Downers Grove, IL', distance: '6.1 mi',
+      tags: ['Full-Service Remodels', 'TimberTech Pro'],
+      specialties: ['Replacement Decking', 'Custom Shapes'],
+      since: 2011
+    },
+    {
+      initials: 'TS', name: 'TruSpace Outdoor', rating: 4.9, reviews: 421,
+      location: 'Wheaton, IL', distance: '8.3 mi',
+      tags: ['Award-Winning', 'TimberTech Certified', 'Design-Build'],
+      specialties: ['Covered Porches', 'Outdoor Kitchens'],
+      since: 2007
+    },
+    {
+      initials: 'HH', name: 'Heartland Home Pros', rating: 4.6, reviews: 167,
+      location: 'Aurora, IL', distance: '11.0 mi',
+      tags: ['Budget-Friendly', 'TimberTech Certified'],
+      specialties: ['Board Replacement', 'Dock Construction'],
+      since: 2016
+    }
+  ];
+
+  function stars(rating) {
+    const full = Math.floor(rating);
+    const half = rating % 1 >= 0.5 ? 1 : 0;
+    return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - half);
+  }
+
+  function buildSuccessPage() {
+    const name = state.fname || 'there';
+    document.getElementById('success-name').textContent = name;
+    document.getElementById('success-email').textContent = state.email || 'your email';
+    const cityEl = document.getElementById('success-city');
+    if (cityEl) cityEl.textContent = state.city || 'your area';
+    const contactEl = document.getElementById('success-contact');
+    if (contactEl) contactEl.textContent = state.contactMethod || 'your preferred contact method';
+
+    const list = document.getElementById('contractor-list');
+    list.innerHTML = '';
+
+    contractorData.forEach((c, i) => {
+      const card = document.createElement('div');
+      card.className = 'contractor-card';
+      card.style.animationDelay = (i * 0.08) + 's';
+      const badgeHtml = i === 0
+        ? `<div class="match-badge">&#10003; Accepted</div>`
+        : `<div class="match-badge" style="background:#fefce8;color:#92400e;border-color:#fde68a;">&#8987; Reviewing</div>`;
+      card.innerHTML = `
+        <div class="contractor-avatar">${c.initials}</div>
+        <div class="contractor-info">
+          <div class="contractor-name">${c.name}</div>
+          <div class="contractor-meta">
+            <span class="star-rating">${stars(c.rating)}</span>
+            <span class="rating-count">${c.rating} (${c.reviews} reviews)</span>
+            <span>&#128205; ${c.location} &middot; ${c.distance} away</span>
+          </div>
+          <div class="contractor-tags">
+            ${c.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+          </div>
+          <div class="contractor-actions">
+            <button class="btn-profile" onclick="viewProfile('${c.name}')">View Profile on TimberTech.com</button>
+            <button class="btn-download" onclick="downloadContact('${c.name}', '${c.location}')">&#8595; Download Contact</button>
+          </div>
+        </div>
+        ${badgeHtml}
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function viewProfile(name) {
+    alert(`Viewing profile for ${name}\n\n(In production, this would open a full contractor profile page with portfolio, reviews, certifications, and contact options.)`);
+  }
+
+  function downloadContact(name, location) {
+    // Generate a vCard-style download
+    const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nORG:${name}\nADR:;;${location};;;;\nNOTE:TimberTech Certified Contractor — matched via Request a Quote\nEND:VCARD`;
+    const blob = new Blob([vcard], { type: 'text/vcard' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${name.replace(/\s+/g,'-')}.vcf`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ===================== RESTART =====================
+  function restart() {
+    // Reset state
+    Object.assign(state, {
+      zip:'', projectType:null, flowPath:'standard',
+      projectDetails:null, qualification:null, timing:null,
+      contactMethod:'No preference',
+      fname:'', lname:'', phone:'', email:'', city:'',
+      description:'', hasPhoto:false, consent:false
+    });
+    // Reset UI
+    document.getElementById('zip').value = '';
+    document.querySelectorAll('.project-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('btn-project-next').disabled = true;
+    document.querySelectorAll('.radio-option').forEach(r => r.classList.remove('selected'));
+    document.getElementById('btn-details-next').disabled = true;
+    document.getElementById('btn-qual-next').disabled = true;
+    document.getElementById('btn-timing-next').disabled = true;
+    document.querySelectorAll('.field-input').forEach(i => i.value = '');
+    document.getElementById('project-details').value = '';
+    document.getElementById('photo-preview').style.display = 'none';
+    document.getElementById('consent-check').checked = false;
+    document.getElementById('submit-btn').disabled = true;
+    document.querySelectorAll('.contact-pill').forEach((p,i) => {
+      p.classList.toggle('selected', i === 0);
+    });
+    goTo('screen-zip');
+  }
+</script>
+</body>
+</html>
